@@ -1,0 +1,32 @@
+{
+  "name": "Rust Learning",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "runArgs": ["--init"],
+  "remoteUser": "vscode",
+
+  // Persist cargo cache across rebuilds
+  "mounts": [
+    "source=rust-learning-cargo-cache,target=/usr/local/cargo/registry,type=volume",
+    "source=rust-learning-target,target=${containerWorkspaceFolder}/target,type=volume"
+  ],
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "rust-analyzer.check.command": "clippy",
+        "editor.formatOnSave": true,
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "rust-lang.rust-analyzer",
+        "tamasfe.even-better-toml",
+        "vadimcn.vscode-lldb"
+      ]
+    }
+  },
+
+  // Verify setup on creation
+  "postCreateCommand": "rustc --version && cargo --version && rustlings --version"
+}
